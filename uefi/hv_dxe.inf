@@ -1,0 +1,30 @@
+; UEFI DXE research component (incomplete)
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = DarkRvbbitDxe
+  FILE_GUID                      = a2c9f1b3-7e4d-4d21-a9b1-3c5e6f0a9d11
+  MODULE_TYPE                    = DXE_DRIVER
+  VERSION_STRING                 = 1.0
+  ENTRY_POINT                    = UefiMain
+
+[Sources]
+  hv_dxe.c
+  hv_driver_blob.c
+
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+
+[LibraryClasses]
+  UefiDriverEntryPoint
+  UefiBootServicesTableLib
+  MemoryAllocationLib
+  BaseMemoryLib
+  DebugLib
+
+[Protocols]
+  gEfiLoadedImageProtocolGuid
+
+[Depex]
+  TRUE

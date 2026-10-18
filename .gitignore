@@ -1,0 +1,53 @@
+# Build artifacts (never publish local compiled drivers)
+*.obj
+*.exe
+*.sys
+*.dll
+*.lib
+*.exp
+*.ilk
+*.idb
+*.pdb
+*.pch
+*.tlog
+*.lastbuildstate
+*.cat
+*.efi
+*.fd
+*.rom
+*.map
+
+# Development tools
+.vs/
+.vscode/
+*.suo
+*.user
+*.VC.db
+__pycache__/
+*.py[cod]
+Build/
+Conf/
+
+# Local keys and settings
+certs/
+*.pfx
+*.p12
+*.pem
+*.key
+.env
+.env.*
+
+# Debugging, crash reports, and traces
+*.dmp
+*.mdmp
+*.etl
+*.evtx
+*.log
+
+# OS noise / local archives
+.DS_Store
+Thumbs.db
+desktop.ini
+*.zip
+*.7z
+*.rar

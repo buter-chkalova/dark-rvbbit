@@ -1,0 +1,47 @@
+; Main driver package for the research prototype
+; Configured as boot-start; installation and runtime behavior are unverified
+
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = System
+ClassGuid   = {4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider    = DarkRvbbit
+DriverVer   = 10/13/2026,1.0.0.0
+CatalogFile = dark_rvbbit.cat
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+dark_rvbbit.sys = 1,,
+
+[Manufacturer]
+%MfgName% = DarkRvbbit,NTamd64
+
+[DarkRvbbit.NTamd64]
+%DevName% = DarkRvbbit_Inst, root\dark_rvbbit
+
+[DarkRvbbit_Inst.NT]
+CopyFiles = DarkRvbbit_CopyFiles
+
+[DarkRvbbit_Inst.NT.Services]
+AddService = dark_rvbbit, 0x00000002, DarkRvbbit_Service
+
+[DarkRvbbit_CopyFiles]
+dark_rvbbit.sys
+
+[DarkRvbbit_Service]
+DisplayName    = %ServiceName%
+ServiceType    = 1
+StartType      = 0
+ErrorControl   = 1
+ServiceBinary  = %12%\dark_rvbbit.sys
+
+[Strings]
+DiskName    = "Dark rvbbit Installation Media"
+MfgName     = "Dark rvbbit"
+DevName     = "Dark rvbbit Hypervisor"
+ServiceName = "Dark rvbbit"
