@@ -3,6 +3,7 @@
 // support has not been validated.
 
 #include "hv.h"
+#include "hv_apic_util.h"
 
 static inline ULONG HvVapicRead32(PHV_CPU_CONTEXT_EX ctx, ULONG off) {
     return *(volatile ULONG*)((PUCHAR)ctx->VapicPage + off);
@@ -120,7 +121,7 @@ VOID HvApicvTimerTick(PHV_CPU_CONTEXT_EX ctx) {
     ULONG current = HvVapicRead32(ctx, VAPIC_OFF_TIMER_CURRENT);
 
     ULONG divide = HvVapicRead32(ctx, VAPIC_OFF_TIMER_DIVIDE) & 0xF;
-    ULONG div = (divide == 0xB) ? 1 : (1u << (divide + 1));
+    ULONG div = HvDecodeApicDivide(divide);
     ULONG delta = 0x100000 / div;
 
     if (current <= delta) {
@@ -179,7 +180,7 @@ VOID HvHandleApicWrite(PHV_GUEST_REGS regs, PHV_CPU_CONTEXT_EX ctx, ULONG64 qual
         HvVapicWrite32(ctx, VAPIC_OFF_TIMER_CURRENT, initial);
     } else if (off == VAPIC_OFF_TIMER_DIVIDE) {
         ULONG d = HvVapicRead32(ctx, VAPIC_OFF_TIMER_DIVIDE) & 0xF;
-        ULONG div = (d == 0xB) ? 1 : (1u << (d + 1));
+        ULONG div = HvDecodeApicDivide(d);
         ctx->ApicTimer.Divide = div;
     }
 }
