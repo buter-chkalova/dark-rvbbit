@@ -2,6 +2,7 @@
 // Timer MSR accesses are handled in software.
 
 #include "hv.h"
+#include "hv_apic_util.h"
 
 static ULONG64 HvGuestTsc(void) {
     ULONG64 off = 0;
@@ -65,19 +66,7 @@ BOOLEAN HvApicTimerWriteMsr(PHV_CPU_CONTEXT_EX ctx, ULONG msr, ULONG64 value) {
         return TRUE;
 
     case IA32_X2APIC_TIMER_DIVIDE: {
-        // 4-bit field. 0xb=1, 0x0=2, 0x1=4, etc. not linear.
-        ULONG d = (ULONG)(value & 0xF);
-        switch (d) {
-        case 0xB: t->Divide = 1;  break;
-        case 0x0: t->Divide = 2;  break;
-        case 0x1: t->Divide = 4;  break;
-        case 0x2: t->Divide = 8;  break;
-        case 0x3: t->Divide = 16; break;
-        case 0x8: t->Divide = 32; break;
-        case 0x9: t->Divide = 64; break;
-        case 0xA: t->Divide = 128; break;
-        default:  t->Divide = 1;  break;
-        }
+        t->Divide = HvDecodeApicDivide((ULONG)value);
         return TRUE;
     }
     }
